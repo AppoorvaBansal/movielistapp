@@ -39,7 +39,7 @@ class MyHomePage extends StatelessWidget {
           itemBuilder:(BuildContext context,int index){
         return Card(
           elevation: 400,
-            color: Colors.purple.shade100,
+            color: Colors.white,
             child:ListTile(
               title: Text(movieDetailedList[index].Title),
               subtitle: Text(movieDetailedList[index].Actors),
@@ -47,18 +47,22 @@ class MyHomePage extends StatelessWidget {
               leading: CircleAvatar(
                 
                 child: Container(
+                  height: 150,
+                  width: 150,
                   decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(movieDetailedList[index].Images[1]),fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(20.0)
                     
                   ),
-                  child: Text("M")
+                  child: Text("")
                   
                 ),
                 
                 
               ),
               onTap: ()=>{
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>MovieDetails(movieName: movieDetailedList[index].Title,)))
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>MovieDetails(movieObject: movieDetailedList[index],)))
                 //debugPrint("Clickeddd")
 
               },
@@ -74,52 +78,175 @@ class MyHomePage extends StatelessWidget {
 
 class MovieDetails extends StatelessWidget {
 
-  final String movieName;
+  //final String movieName;
+  final DBMovie movieObject;
 
 
-
-  const MovieDetails({Key? key,required this.movieName}) : super(key: key);
+  const MovieDetails({Key? key,required this.movieObject}) : super(key: key);
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Movie Details of : $movieName "),
+        title: Text("Movie Details of : ${movieObject.Title}"),
         backgroundColor: Colors.deepPurple,
       ),
       backgroundColor: Colors.deepPurple.shade100,
-      body:Container(
 
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Text("data1",style: TextStyle(fontSize: 30),),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Text("data2",style: TextStyle(fontSize: 30),),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Text("data3",style: TextStyle(fontSize: 30),),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Text("data4",style: TextStyle(fontSize: 30),),
-            ),
+      body:ListView(
+        children: [
+          MovieThumbnail(thumbnail:movieObject.Images[1]),
+          MoviePoster(poster:movieObject.Images[1])
 
-          ],
+        ],
 
-        ),
+
 
       )
 
 
 
+      // body:Container(
+      //
+      //   child: Column(
+      //     //mainAxisAlignment: MainAxisAlignment.center,
+      //     children: [
+      //       Padding(
+      //         padding: const EdgeInsets.all(18.0),
+      //         child: Text(movieObject.Actors ,style: TextStyle(fontSize: 30),),
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.all(18.0),
+      //         child: Text(movieObject.Genre,style: TextStyle(fontSize: 30),),
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.all(18.0),
+      //         child: Text(movieObject.Plot,style: TextStyle(fontSize: 30),),
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.all(18.0),
+      //         child: Text("data4",style: TextStyle(fontSize: 30),),
+      //       ),
+      //
+      //     ],
+      //
+      //   ),
+      //
+      // )
+
+
+
     );
   }
+}
+
+class MoviePoster extends StatelessWidget {
+
+  final String poster;
+  const MoviePoster({Key? key,required this.poster}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+
+
+            image: DecorationImage(
+              image: NetworkImage(poster),fit:BoxFit.cover
+            )
+          ),
+
+
+        ),
+
+        Container(
+
+
+
+        ),
+
+
+      ],
+
+    );
+  }
+
+}
+
+
+class MovieThumbnail extends StatelessWidget {
+  
+  final String thumbnail;
+  const MovieThumbnail({Key? key,required this.thumbnail}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      
+      alignment: Alignment.bottomCenter,
+      children: [
+
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height:180,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(thumbnail),fit: BoxFit.cover),
+
+
+              ),
+
+            ),
+            Icon(Icons.play_circle_outline_rounded,size:90,color: Colors.white,),
+
+
+
+
+          ],
+
+        ),
+
+        Container(
+          height: 80,
+      decoration: BoxDecoration(
+      gradient: LinearGradient(
+          colors: [Color(0x0),
+        Color(0xfffafafa)],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter
+
+      ),
+
+
+      ),
+
+        )
+        // Container(
+        //   height: 80,
+        //   decoration: BoxDecoration(
+        //
+        //     gradient: LinearGradient(colors:[Color(0x00000000),
+        //       Color(0xfffafafa)],begin: Alignment.topCenter,end: Alignment.bottomCenter),
+        //
+        //   ),
+        // )
+
+
+        
+      ],
+      
+      
+      
+    );
+  }
+
 }
 
