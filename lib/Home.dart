@@ -97,7 +97,7 @@ class MovieDetails extends StatelessWidget {
       body:ListView(
         children: [
           MovieThumbnail(thumbnail:movieObject.Images[1]),
-          MoviePoster(poster:movieObject.Images[1])
+          MoviePoster(poster:movieObject)
 
         ],
 
@@ -143,36 +143,59 @@ class MovieDetails extends StatelessWidget {
 
 class MoviePoster extends StatelessWidget {
 
-  final String poster;
+  final DBMovie poster;
   const MoviePoster({Key? key,required this.poster}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Container(
+      margin: EdgeInsets.all(10.0),
+      child: Row(
 
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          decoration: BoxDecoration(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 4.0),
+            height: 180,
+            width: 120,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(poster.Images[0]),fit:BoxFit.cover
+              )
+            ),
 
 
-            image: DecorationImage(
-              image: NetworkImage(poster),fit:BoxFit.cover
-            )
           ),
 
+          Container(
+            height: 180,
+            width: MediaQuery.of(context).size.width*0.7,
 
-        ),
+        decoration: BoxDecoration(
+        color: Colors.transparent,
+      border: Border()
+      ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Column(
+                mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(poster.Actors,),
+                  Text(poster.Genre),
+                  Text(poster.Director),
+                  Text(poster.imdbID)
 
-        Container(
 
+                ],
 
+              ),
+            ),
+            
+            ),
+          
+        ],
 
-        ),
-
-
-      ],
-
+      ),
     );
   }
 
